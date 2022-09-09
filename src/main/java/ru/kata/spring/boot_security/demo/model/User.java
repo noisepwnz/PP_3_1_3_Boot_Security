@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "t_user")
 public class User implements UserDetails {
     @Column
     @Id
@@ -23,6 +23,25 @@ public class User implements UserDetails {
 
     @Column
     private String password;
+
+    @Column
+    private String username;
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public User(int id, String name, String surname, String password, String username) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.username = username;
+    }
 
     public User(String name, String surname, String password) {
 
@@ -40,7 +59,6 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-
 
 
     public int getId() {
@@ -81,6 +99,9 @@ public class User implements UserDetails {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 
@@ -91,12 +112,12 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return getUsername();
+        return username;
     }
 
     @Override
