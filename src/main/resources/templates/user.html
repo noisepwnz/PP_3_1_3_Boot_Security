@@ -11,13 +11,17 @@
         <th>Username</th>
         <th>Name</th>
         <th>Surname</th>
-        <th>Password</th>
+        <th> Password</th>
+        <th>Roles </th>
     </tr>
     <tr>
-        <td th:text="${user.username}"></td>
+        <td th:text="${user.username}"  &emsp; ></td>
+
         <td th:text="${user.name}"></td>
+
         <td th:text="${user.surname}"></td>
-        <td th:text="${user.password}"></td>
+
+
         <td th:text="${user.roles}"></td>
     </tr>
 </table>
