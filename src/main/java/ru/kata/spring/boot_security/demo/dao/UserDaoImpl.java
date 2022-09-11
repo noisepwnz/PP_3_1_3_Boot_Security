@@ -14,11 +14,8 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
     @PersistenceContext
-    private final EntityManager entityManager;
+    EntityManager entityManager;
 
-    public UserDaoImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 
     @Override
     public void add(User user) {
@@ -32,10 +29,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAll() {
-        String jpql = "SELECT c FROM User c";
-        TypedQuery<User> query = entityManager.createQuery(jpql, User.class);
+        return entityManager.createQuery("from User", User.class).getResultList();
 
-        return query.getResultList();
     }
 
     @Override
@@ -47,6 +42,13 @@ public class UserDaoImpl implements UserDao {
     public void delete(int id) {
         entityManager.remove(findById(id));
 
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return entityManager.createQuery("SELECT u FROM User AS u JOIN FETCH u.roles WHERE u.username= :username", User.class)
+                .setParameter("username", username)
+                .getSingleResult();
     }
 
 

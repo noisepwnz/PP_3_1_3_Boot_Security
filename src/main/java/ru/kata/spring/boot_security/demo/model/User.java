@@ -1,11 +1,16 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "t_user")
@@ -35,30 +40,24 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    public User(int id, String name, String surname, String password, String username) {
-        this.id = id;
+    public User(String name, String surname, String password, String username) {
         this.name = name;
         this.surname = surname;
         this.password = password;
         this.username = username;
     }
 
-    public User(String name, String surname, String password) {
-
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
-    }
 
     public User() {
 
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
+
+    @ManyToMany(cascade=CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
 
     public int getId() {
@@ -93,21 +92,27 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+
+
+
     @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
-                ", roles=" + roles +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id;
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+@Transactional
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+       return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -138,5 +143,8 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+    public void addRole(Role roleUser) {
+        this.roles.add(roleUser);
     }
 }

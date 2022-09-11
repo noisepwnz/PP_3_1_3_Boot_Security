@@ -13,7 +13,12 @@ public interface UserService {
 
     List<User> findAll();
 
-    void update(int id, User updatedUser);
+    public void update(User user);
 
     void delete(int id);
+    User createUser();
+
+    User getUserByUsername(String username);
+
+
 }
