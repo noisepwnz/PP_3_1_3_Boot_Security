@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.roleDao = roleDao;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.getUserByUsername(username);
@@ -46,13 +46,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public User findById(Integer id) {
         return userDao.findById(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<User> findAll() {
         return userDao.findAll();
     }
@@ -82,48 +82,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public User getUserByUsername(String username) {
         return userDao.getUserByUsername(username);
     }
 
 
-//    private final UserDao userDao;
-//
-//
-//    public UserServiceImpl(UserDao userDao) {
-//        this.userDao = userDao;
-//    }
-//
-//    @Transactional
-//    @Override
-//    public void add(User user) {
-//        userDao.add(user);
-//
-//    }
-//
-//    @Transactional(readOnly = true)
-//    @Override
-//    public User findById(Integer id) {
-//        return userDao.findById(id);
-//
-//    }
-//
-//    @Transactional(readOnly = true)
-//    @Override
-//    public List<User> findAll() {
-//        return userDao.findAll();
-//    }
-//
-//    @Transactional
-//    @Override
-//    public void update(int id, User updatedUser) {
-//        userDao.update(updatedUser);
-//    }
-//
-//    @Transactional
-//    @Override
-//    public void delete(int id) {
-//        userDao.delete(id);
-//    }
+
 }
