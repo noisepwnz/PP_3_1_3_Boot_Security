@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.roleDao = roleDao;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.getUserByUsername(username);
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         return user;
     }
-
+@Transactional
     @Override
     public void add(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -46,16 +46,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public User findById(Integer id) {
         return userDao.findById(id);
     }
 
     @Override
+    @Transactional
     public List<User> findAll() {
         return userDao.findAll();
     }
 
     @Override
+    @Transactional
     public void update(User user) {
 
         user.setRoles(roleDao.getRolesByName(user.getRoles()));
@@ -70,6 +73,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public User createUser() {
         User user = new User();
         Role roleUser = roleDao.getRoleByName("ROLE_USER");
@@ -78,6 +82,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public User getUserByUsername(String username) {
         return userDao.getUserByUsername(username);
     }

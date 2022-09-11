@@ -32,7 +32,7 @@ public class RoleDaoImpl implements RoleDao{
         return new HashSet<>(entityManager.createQuery("from Role", Role.class).getResultList());
     }
 
-    //SELECT c FROM User c
+
 
     public Set<Role> getRolesByName(Set<Role> roles){
         Set<Role> userRoles = new HashSet<>();
