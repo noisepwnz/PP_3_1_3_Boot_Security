@@ -20,31 +20,35 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
-    private String name;
+    @Column(name = "name")
+    private String firstName;
 
-    @Column
-    private String surname;
+    @Column (name = "surname")
+    private String lastName;
 
     @Column
     private String password;
 
     @Column
-    private String username;
+    private int age;
+
+    @Column (name = "username")
+    private String email;
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public User(String name, String surname, String password, String username) {
-        this.name = name;
-        this.surname = surname;
+    public User(String firstName, String lastName, String password, int age, String email) {
+        this.firstName = firstName;
+        this.lastName  = lastName;
         this.password = password;
-        this.username = username;
+        this.email = email;
+        this.age = age;
     }
 
 
@@ -68,20 +72,21 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Set<Role> getRoles() {
@@ -115,6 +120,18 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public String getPassword() {
         return password;
@@ -122,7 +139,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override

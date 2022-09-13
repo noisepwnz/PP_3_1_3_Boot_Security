@@ -9,6 +9,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.security.Principal;
 import java.util.Set;
 
 @Controller
@@ -25,23 +26,27 @@ public class AdminController {
 
 
     @GetMapping("/users")
-    public String index(Model model) {
-        model.addAttribute("MyUser", userService.findAll());
-        return "index";
+    public String index(Model model , Principal principal) {
+        User user = userService.getUserByUsername(principal.getName());
+        model.addAttribute("user", user);
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("newUser", userService.createUser());
+        model.addAttribute("listRoles",roleService.getAllRoles());
+        return "testAdmin2";
     }
 
 
     @GetMapping("/users/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.findById(id));
-        return "show";
+        return "redirect:/users";
     }
 
     @GetMapping("/users/new")
     public String newUser(Model model) {
         model.addAttribute("user", userService.createUser());
         model.addAttribute("listRoles", roleService.getAllRoles());
-        return "new";
+        return "new2";
     }
 
     @PostMapping("/users")
@@ -52,15 +57,15 @@ public class AdminController {
 
     }
 
-    @GetMapping("/users/{id}/edit")
+    @PutMapping("/users/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
         Set<Role> roles = roleService.getAllRoles();
         model.addAttribute("user",userService.findById(id));
         model.addAttribute("listRoles", roleService.getAllRoles());
-        return "edit";
+        return "redirect:/users";
     }
 
-    @PatchMapping("/users/{id}")
+    @PutMapping("/users/{id}")
     public String update(@ModelAttribute("user") User user) {
         userService.update(user);
         return "redirect:/users";
