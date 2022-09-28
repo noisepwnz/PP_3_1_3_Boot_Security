@@ -12,6 +12,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
+//test
 @Entity
 @Table(name = "t_user")
 public class User implements UserDetails {
